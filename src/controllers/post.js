@@ -35,9 +35,6 @@ class postController {
 
   }
 
-  console.log(allPhotosUrl)
-
-
     const newPost = new Posts({ 
       title: req.body.title,
       description: req.body.description,
@@ -46,8 +43,6 @@ class postController {
       photos: allPhotosUrl,
 
   })  
-
-  console.log(newPost)
 
     try {
         const post = await newPost.save()
