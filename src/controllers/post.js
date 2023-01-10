@@ -3,8 +3,6 @@ const fs = require('fs-extra');
 const generateToken = require("../helper/generateAuthToken");
 const Posts = require("../database/models/Posts");
 const Users = require("../database/models/Users");
-const cloudinary = require("../helper/cloudinary");
-
 
 const { onError, onSuccess } = require("../utils/response");
 
@@ -14,33 +12,20 @@ class postController {
     const number = req.authUser.number 
     const userFound = await Users.findOne({ number: number });
 
-    if (!userFound) return onError(res, 404, "Ntago wiyandikishije!"); 
+    if (!userFound) return onError(res, 404, "Ntago wiyandikishije!");
+
     if (!req.body.title) return onError(res, 401, "Title is required!");
     if (!req.body.description) return onError(res, 401, "Description is required!");
     if (!req.body.cell) return onError(res, 401, "Cell is required!");
     if (!req.body.village) return onError(res, 401, "Village is required!");
-
-    if (req.files.photos === undefined) return onError(res, 400, "Shiramo ifoto");
-    
-    let allPhotosUrl = []
-
-    for (let i = 0; i < req.files.photos.length; i++) {
-      const locaFilePath = req.files.photos[i].path;
-
-      const storeImages = await cloudinary.uploader.upload(locaFilePath, {folder: "perksImages", secure: true});
-
-      allPhotosUrl.push(storeImages.secure_url);
-
-      await fs.remove(locaFilePath);
-
-  }
+    if (!req.body.photos) return onError(res, 401, "Image is required!");
 
     const newPost = new Posts({ 
       title: req.body.title,
       description: req.body.description,
       cell: req.body.cell,
       village: req.body.village,
-      photos: allPhotosUrl,
+      photos: req.body.photos,
 
   })  
 

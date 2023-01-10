@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const Users = require("../database/models/Users");
 
-const { onError, onSuccess } = require("../utils/response");
+const { onError } = require("../utils/response");
 
 dotenv.config();
 const verifyUserAuthToken = async (req, res, next) => {
@@ -17,8 +17,6 @@ const verifyUserAuthToken = async (req, res, next) => {
     }
     req.authUser = decodedToken;
     const authUser = decodedToken.number;
-
-    console.log(authUser);
 
     const userExist = await Users.findOne({ number: authUser });
     if (!userExist) return onError(res, 401, "Ntago wiyandikishije!");

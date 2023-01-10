@@ -14,7 +14,7 @@ const postSchema = mongoose.Schema({
     type: String,
   },
   photos: {
-    type: Array,
+    type: String,
   },
  
   
