@@ -18,7 +18,7 @@ class postController {
     if (!req.body.description) return onError(res, 401, "Description is required!");
     if (!req.body.cell) return onError(res, 401, "Cell is required!");
     if (!req.body.village) return onError(res, 401, "Village is required!");
-    if (!req.body.photos) return onError(res, 401, "Image is required!");
+    // if (!req.body.photos) return onError(res, 401, "Image is required!");
 
     const newPost = new Posts({ 
       title: req.body.title,
@@ -89,6 +89,8 @@ class postController {
   static async getAllPosts(req, res) {
     try {
       const user = req.authUser.number 
+
+      console.log('user', user);
 
       const posts = await Posts.find({number: user});
       if (posts.length===0) return onError(res, 404, "No records at the moment");
